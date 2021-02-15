@@ -24,6 +24,7 @@
     "start": "webpack serve --mode=development"
   },
   "dependencies": {
+    "agora-access-token": "^2.0.4",
     "agora-rtc-sdk": "3.4.0",
     "normalize.css": "^8.0.1",
     "react": "^17.0.1",

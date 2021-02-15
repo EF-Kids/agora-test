@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import localMedia from './localMedia';
 import agoraManager from './agoraManager';
 import styles from './App.module.less';
@@ -27,19 +27,25 @@ const LocalPod = (props) => {
 const RemotePod = (props) => {
   const { width, height } = props;
 
-  let video = useRef(null);
+  const styleObject = useMemo(
+    () => ({ width: `${width}px`, height: `${height}px` }),
+    [width, height],
+  );
+  const idRef = useRef('remote-pod');
 
   useEffect(() => {
     (async () => {
       const getUserMediaConfig = { audio: true, video: { width, height } };
       await agoraManager.init(getUserMediaConfig);
-      console.warn('remoteStream', agoraManager.getRemoteStream());
+      const remoteStream = agoraManager.getRemoteStream();
+      console.warn('remoteStream', remoteStream);
+      remoteStream.play(idRef.current);
     })();
   }, []);
 
   return (
     <div className={styles.RemotePod}>
-      <video ref={video} width={width} height={height} autoPlay={true} />
+      <div id={idRef.current} style={styleObject} />
     </div>
   )
 };
